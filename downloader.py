@@ -13,9 +13,6 @@ parser.add_argument('--config', help='Config file', nargs='?', action='store', c
 args = parser.parse_args()
 
 print('DL-Telegram-by-file-attachment started...')
-if not os.path.exists('config.ini'):
-    print('Config file not found')
-    exit()
 
 if args.config is not None:
     if not os.path.exists(args.config):
@@ -24,6 +21,10 @@ if args.config is not None:
     print('  Config loaded!')
     config = configparser.RawConfigParser()
     config.read_file(open(args.config))
+else:
+    if not os.path.exists('config.ini'):
+        print('Config file not found')
+        exit()
 
 url = 'https://tg.i-c-a.su/json/' + config.get('channel', 'name') + '?limit=' + config.get('channel', 'limit')
 r = urlopen(url)
