@@ -36,7 +36,7 @@ search = search.split(',')
 for message in data['messages']:
     if 'media' in message:
         for term in search:
-            if re.search(term, message['media']['document']['attributes'][0]['file_name'], re.IGNORECASE):
+            if 'document' in message['media'] and re.search(term, message['media']['document']['attributes'][0]['file_name'], re.IGNORECASE):
                 print(' Download ' + message['media']['document']['attributes'][0]['file_name'])
                 response = urlopen('https://tg.i-c-a.su/media/' + config.get('channel', 'name') + '/' + str(message['id']))
                 file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
