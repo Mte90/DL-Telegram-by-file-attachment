@@ -26,7 +26,8 @@ else:
         print('Config file not found')
         exit()
 
-url = 'https://tg.i-c-a.su/json/' + config.get('channel', 'name') + '?limit=' + config.get('channel', 'limit')
+channel_name = str(config.get('channel', 'name')).lower()
+url = 'https://tg.i-c-a.su/json/' + channel_name + '?limit=' + config.get('channel', 'limit')
 r = urlopen(url)
 data = json.loads(str(r.read().decode("utf-8")))
 
@@ -38,7 +39,7 @@ for message in data['messages']:
         for term in search:
             if 'document' in message['media'] and re.search(term, message['media']['document']['attributes'][0]['file_name'], re.IGNORECASE):
                 print(' Download ' + message['media']['document']['attributes'][0]['file_name'])
-                response = urlopen('https://tg.i-c-a.su/media/' + config.get('channel', 'name') + '/' + str(message['id']))
+                response = urlopen('https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
                 file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
                 file.write(response.read())
                 file.close
