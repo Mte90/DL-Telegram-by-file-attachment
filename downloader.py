@@ -34,6 +34,8 @@ data = json.loads(str(r.read().decode("utf-8")))
 search = str(config.get('channel', 'filter'))
 search = search.split(',')
 
+print('Scanning in progress')
+
 for message in data['messages']:
     if 'media' in message:
         for term in search:
@@ -43,3 +45,5 @@ for message in data['messages']:
                 file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
                 file.write(response.read())
                 file.close
+
+print('Finished')
