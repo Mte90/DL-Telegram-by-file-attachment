@@ -27,14 +27,12 @@ else:
         exit()
 
 channel_name = str(config.get('channel', 'name')).lower()
-url = 'https://tg.i-c-a.su/json/' + channel_name + '?limit=' + config.get('channel', 'limit')
+url = 'https://tg.i-c-a.su/json/' + channel_name + '?limit=100'
 r = urlopen(url)
 data = json.loads(str(r.read().decode("utf-8")))
 
 search = str(config.get('channel', 'filter'))
 search = search.split(',')
-
-print('Scanning in progress')
 
 for message in data['messages']:
     if 'media' in message:
@@ -46,4 +44,4 @@ for message in data['messages']:
                 file.write(response.read())
                 file.close
 
-print('Finished')
+print('Downloading terminated')

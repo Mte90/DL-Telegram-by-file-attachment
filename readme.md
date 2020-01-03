@@ -3,6 +3,3 @@
 
 This tool automatically download a file (document) from a Telegram channel based on terms to search on.
 
-## Install
-
-Just copy `config-sample.ini` to `config.ini` and configure it the various parameters :-)
