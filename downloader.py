@@ -27,21 +27,30 @@ else:
         exit()
 
 channel_name = str(config.get('channel', 'name')).lower()
-url = 'https://tg.i-c-a.su/json/' + channel_name + '?limit=100'
-r = urlopen(url)
-data = json.loads(str(r.read().decode("utf-8")))
+pages = int(config.get('channel', 'pages'))
 
-search = str(config.get('channel', 'filter'))
-search = search.split(',')
+for page in range(1,pages):
+    print('Parsing ' + str(page) + ' page')
+    url = 'https://tg.i-c-a.su/json/' + channel_name + '/' + str(page) + '?limit=100'
+    r = urlopen(url)
+    data = json.loads(str(r.read().decode("utf-8")))
 
-for message in data['messages']:
-    if 'media' in message:
-        for term in search:
-            if 'document' in message['media'] and re.search(term, message['media']['document']['attributes'][0]['file_name'], re.IGNORECASE):
-                print(' Download ' + message['media']['document']['attributes'][0]['file_name'])
-                response = urlopen('https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
-                file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
-                file.write(response.read())
-                file.close
+    search = str(config.get('channel', 'filter'))
+    search = search.split(',')
+
+    for message in data['messages']:
+        if 'media' in message:
+            for term in search:
+                if 'document' in message['media'] and re.search(term, message['media']['document']['attributes'][0]['file_name'], re.IGNORECASE):
+                    print(' Download ' + message['media']['document']['attributes'][0]['file_name'])
+                    if not os.path.exists(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name']):
+                        try:
+                            response = urlopen('https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
+                            file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
+                            file.write(response.read())
+                            file.close
+                        except:
+                            print('  Too many requests to the service')
+                            print('  https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
 
 print('Downloading terminated')
