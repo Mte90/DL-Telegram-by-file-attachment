@@ -48,7 +48,7 @@ for page in range(1,pages):
                             response = urlopen('https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
                             file = open(config.get('channel', 'download') + message['media']['document']['attributes'][0]['file_name'], 'wb')
                             file.write(response.read())
-                            file.close
+                            file.close()
                         except:
                             print('  Too many requests to the service')
                             print('  https://tg.i-c-a.su/media/' + channel_name + '/' + str(message['id']))
