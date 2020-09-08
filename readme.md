@@ -7,4 +7,5 @@ The [service used to get Telegram content](https://tg.i-c-a.su/) has a RPM limit
 
 ## Installation 
 
-Just copy and rename `config-sample.ini` to `config.ini` and set as you need.
+Just copy and rename `config-sample.ini` to `config.ini` and set as you need.  
+Run `downloader.py` to execute the tool.
